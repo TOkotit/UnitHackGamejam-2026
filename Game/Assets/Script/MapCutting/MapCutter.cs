@@ -18,6 +18,8 @@ public class MapCutter : MonoBehaviour
     [Header("Разрезаемые объекты")]
     [SerializeField] private List<GameObject> allCuttableObjects = new();
 
+    [SerializeField] private int availableCuts;
+
     private InputManager inputManager;
     private Camera mainCamera;
     private float defaultZoom;
@@ -35,7 +37,7 @@ public class MapCutter : MonoBehaviour
         if (tilemap)
         {
             grid = tilemap.layoutGrid;
-            tilemap.CompressBounds(); // Обновляем границы
+            tilemap.CompressBounds(); 
         }
 
         var gameInput = inputManager.GetGameInput();
@@ -66,10 +68,14 @@ public class MapCutter : MonoBehaviour
 
     private void OnCutMenuPerformed(InputAction.CallbackContext ctx)
     {
-        if (inputManager.IsUIMode)
+        if (inputManager.IsUIMode || availableCuts <= 0)
             inputManager.SetGameplay();
         else
+        {
+            availableCuts--; 
             inputManager.SetUI();
+        }
+            
     }
 
     private void OnCutPerformed(InputAction.CallbackContext ctx)
@@ -104,7 +110,6 @@ public class MapCutter : MonoBehaviour
     private void PerformCut(Vector2 mouseWorldPos)
     {
         if (!tilemap || !grid) return;
-        tilemap.CompressBounds(); // Обновляем границы перед разрезом
 
         var bounds = tilemap.cellBounds;
         if (bounds.size.x <= 0 || bounds.size.y <= 0) return;
@@ -117,19 +122,25 @@ public class MapCutter : MonoBehaviour
         {
             cutCoordWorld = SnapToGrid(mouseWorldPos.y, cellSize.y, grid, true);
             cutCell = grid.WorldToCell(new Vector3(0, cutCoordWorld, 0));
+            
             var cellTop = grid.CellToWorld(cutCell).y + cellSize.y;
             if (Mathf.Approximately(cutCoordWorld, cellTop))
                 cutCell.y += 1;
-            cutCell.y = Mathf.Clamp(cutCell.y, bounds.yMin, bounds.yMax);
+            
+            cutCell.y = Mathf.Clamp(cutCell.y, bounds.yMin + 1, bounds.yMax);
+            cutCoordWorld = grid.CellToWorld(new Vector3Int(0, cutCell.y, 0)).y;
         }
         else
         {
             cutCoordWorld = SnapToGrid(mouseWorldPos.x, cellSize.x, grid, false);
             cutCell = grid.WorldToCell(new Vector3(cutCoordWorld, 0, 0));
+            
             var cellRight = grid.CellToWorld(cutCell).x + cellSize.x;
             if (Mathf.Approximately(cutCoordWorld, cellRight))
                 cutCell.x += 1;
-            cutCell.x = Mathf.Clamp(cutCell.x, bounds.xMin, bounds.xMax);
+            
+            cutCell.x = Mathf.Clamp(cutCell.x, bounds.xMin + 1, bounds.xMax);
+            cutCoordWorld = grid.CellToWorld(new Vector3Int(cutCell.x, 0, 0)).x;
         }
 
         SwapTilemapParts(cutCell, isHorizontal);
