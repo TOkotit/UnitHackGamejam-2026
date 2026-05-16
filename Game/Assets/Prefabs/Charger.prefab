@@ -161,7 +161,7 @@ Transform:
   m_GameObject: {fileID: 3045496953221354140}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.063, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -216,7 +216,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -611,8 +611,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.06690565, y: -0.013263181}
-  m_Size: {x: 0.14926678, y: 0.31754997}
+  m_Offset: {x: -0.015915066, y: -0.013263181}
+  m_Size: {x: 0.120346725, y: 0.31754997}
   m_Direction: 0
 --- !u!114 &5744445785182502654
 MonoBehaviour:
@@ -629,7 +629,7 @@ MonoBehaviour:
   currentState: 0
   spriteRenderer: {fileID: 0}
   animator: {fileID: 1700874578600822683}
-  attackZone: {fileID: 4683260123990563097}
+  spriteTransform: {fileID: 6249183123234510185}
   visionRange: 8
   chargeDistance: 4
   patrolSpeed: 2

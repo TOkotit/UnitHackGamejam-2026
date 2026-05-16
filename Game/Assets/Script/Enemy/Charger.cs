@@ -11,6 +11,7 @@ namespace Script.Enemy
         [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] Animator animator;
         [SerializeField] private GameObject attackZone;
+        [SerializeField] Transform spriteTransform;
         [SerializeField] private float visionRange = 8f;
         [SerializeField] private float chargeDistance = 4f;
         
