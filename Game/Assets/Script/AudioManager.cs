@@ -36,6 +36,7 @@ namespace Script
             if (musicSource != null)
             {
                 musicSource.loop = true;
+                musicSource.volume = 0.1f;  
             }
         }
         
@@ -46,7 +47,7 @@ namespace Script
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
 
             musicSource.clip = clip;
-            musicSource.volume = 1f;
+            musicSource.volume = 0.1f;
             musicSource.Play();
         }
         
@@ -85,7 +86,7 @@ namespace Script
                     musicSource.volume = Mathf.Lerp(0f, 1f, t / (duration / 2));
                     yield return null;
                 }
-                musicSource.volume = 1f;
+                musicSource.volume = 0.1f;
             }
         }
         
