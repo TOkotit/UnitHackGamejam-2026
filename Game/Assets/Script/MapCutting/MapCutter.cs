@@ -20,6 +20,11 @@ public class MapCutter : MonoBehaviour
 
     [SerializeField] private int availableCuts;
 
+    [Header("Подсветка линии разреза")]
+    [SerializeField] private LineRenderer cutLine;
+    [SerializeField] private Color lineColor = Color.red;
+    [SerializeField] private float lineWidth = 0.1f;
+
     private InputManager inputManager;
     private Camera mainCamera;
     private float defaultZoom;
@@ -40,6 +45,20 @@ public class MapCutter : MonoBehaviour
             tilemap.CompressBounds();
         }
 
+        if (!cutLine)
+        {
+            var lineObj = new GameObject("CutLine");
+            lineObj.transform.SetParent(transform);
+            cutLine = lineObj.AddComponent<LineRenderer>();
+        }
+        cutLine.startWidth = lineWidth;
+        cutLine.endWidth = lineWidth;
+        cutLine.material = new Material(Shader.Find("Sprites/Default"));
+        cutLine.startColor = lineColor;
+        cutLine.endColor = lineColor;
+        cutLine.positionCount = 2;
+        cutLine.enabled = false;
+
         var gameInput = inputManager.GetGameInput();
         if (gameInput != null)
         {
@@ -51,6 +70,18 @@ public class MapCutter : MonoBehaviour
         }
 
         inputManager.SetGameplay();
+    }
+
+    private void Update()
+    {
+        if (inputManager.IsUIMode && tilemap && grid)
+        {
+            UpdateCutLine();
+        }
+        else if (cutLine && cutLine.enabled)
+        {
+            cutLine.enabled = false;
+        }
     }
 
     private void OnDestroy()
@@ -69,10 +100,17 @@ public class MapCutter : MonoBehaviour
     private void OnCutMenuPerformed(InputAction.CallbackContext ctx)
     {
         if (inputManager.IsUIMode || availableCuts <= 0)
+        {
             inputManager.SetGameplay();
+        }
         else
         {
             availableCuts--;
+            if (Mouse.current != null)
+            {
+                var screenPos = Mouse.current.position.ReadValue();
+                currentMouseWorldPos = mainCamera.ScreenToWorldPoint(screenPos);
+            }
             inputManager.SetUI();
         }
     }
@@ -106,6 +144,36 @@ public class MapCutter : MonoBehaviour
         currentMouseWorldPos = mainCamera.ScreenToWorldPoint(screenPos);
     }
 
+    private void UpdateCutLine()
+    {
+        if (currentMouseWorldPos == Vector2.zero) return;
+
+        if (!TryGetCutLineData(currentMouseWorldPos, isHorizontal, out var cutCoordWorld, out var cutCell))
+        {
+            cutLine.enabled = false;
+            return;
+        }
+
+        var bounds = tilemap.cellBounds;
+        if (isHorizontal)
+        {
+            var minXWorld = tilemap.CellToWorld(new Vector3Int(bounds.xMin, 0, 0)).x;
+            var maxXWorld = tilemap.CellToWorld(new Vector3Int(bounds.xMax, 0, 0)).x;
+            cutLine.SetPosition(0, new Vector3(minXWorld, cutCoordWorld, 0));
+            cutLine.SetPosition(1, new Vector3(maxXWorld, cutCoordWorld, 0));
+        }
+        else
+        {
+            var minYWorld = tilemap.CellToWorld(new Vector3Int(0, bounds.yMin, 0)).y;
+            var maxYWorld = tilemap.CellToWorld(new Vector3Int(0, bounds.yMax, 0)).y;
+            cutLine.SetPosition(0, new Vector3(cutCoordWorld, minYWorld, 0));
+            cutLine.SetPosition(1, new Vector3(cutCoordWorld, maxYWorld, 0));
+        }
+
+        if (!cutLine.enabled)
+            cutLine.enabled = true;
+    }
+
     private void PerformCut(Vector2 mouseWorldPos)
     {
         if (!tilemap || !grid) return;
@@ -116,37 +184,12 @@ public class MapCutter : MonoBehaviour
         var cellPosAtMouse = grid.WorldToCell(mouseWorldPos);
         if (!bounds.Contains(cellPosAtMouse)) return;
 
-        var cellSize = grid.cellSize;
-        float cutCoordWorld;
-        Vector3Int cutCell;
-
-        if (isHorizontal)
-        {
-            cutCoordWorld = SnapToGrid(mouseWorldPos.y, cellSize.y, grid, true);
-            cutCell = grid.WorldToCell(new Vector3(0, cutCoordWorld, 0));
-
-            var cellTop = grid.CellToWorld(cutCell).y + cellSize.y;
-            if (Mathf.Approximately(cutCoordWorld, cellTop))
-                cutCell.y += 1;
-
-            cutCell.y = Mathf.Clamp(cutCell.y, bounds.yMin + 1, bounds.yMax);
-            cutCoordWorld = grid.CellToWorld(new Vector3Int(0, cutCell.y, 0)).y;
-        }
-        else
-        {
-            cutCoordWorld = SnapToGrid(mouseWorldPos.x, cellSize.x, grid, false);
-            cutCell = grid.WorldToCell(new Vector3(cutCoordWorld, 0, 0));
-
-            var cellRight = grid.CellToWorld(cutCell).x + cellSize.x;
-            if (Mathf.Approximately(cutCoordWorld, cellRight))
-                cutCell.x += 1;
-
-            cutCell.x = Mathf.Clamp(cutCell.x, bounds.xMin + 1, bounds.xMax);
-            cutCoordWorld = grid.CellToWorld(new Vector3Int(cutCell.x, 0, 0)).x;
-        }
+        if (!TryGetCutLineData(mouseWorldPos, isHorizontal, out var cutCoordWorld, out var cutCell))
+            return;
 
         SwapTilemapParts(cutCell, isHorizontal);
 
+        var cellSize = grid.cellSize;
         var minWorld = tilemap.CellToWorld(bounds.min);
         var maxWorld = tilemap.CellToWorld(bounds.max) + cellSize;
 
@@ -160,20 +203,14 @@ public class MapCutter : MonoBehaviour
                 var aSize = cutCoordWorld - minWorld.y;
                 var bSize = maxWorld.y - cutCoordWorld;
                 if (aSize <= 0 || bSize <= 0) continue;
-                if (pos.y - minWorld.y < aSize)
-                    pos.y += bSize;
-                else
-                    pos.y -= aSize;
+                pos.y += (pos.y - minWorld.y < aSize) ? bSize : -aSize;
             }
             else
             {
                 var aSize = cutCoordWorld - minWorld.x;
                 var bSize = maxWorld.x - cutCoordWorld;
                 if (aSize <= 0 || bSize <= 0) continue;
-                if (pos.x - minWorld.x < aSize)
-                    pos.x += bSize;
-                else
-                    pos.x -= aSize;
+                pos.x += (pos.x - minWorld.x < aSize) ? bSize : -aSize;
             }
             obj.transform.position = pos;
         }
@@ -181,6 +218,46 @@ public class MapCutter : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(ZoomEffect());
         inputManager.SetGameplay();
+    }
+
+    private bool TryGetCutLineData(Vector3 worldPos, bool horizontal, out float cutCoordWorld, out Vector3Int cutCell)
+    {
+        cutCoordWorld = 0;
+        cutCell = Vector3Int.zero;
+
+        var bounds = tilemap.cellBounds;
+        if (bounds.size.x <= 0 || bounds.size.y <= 0) return false;
+
+        var cellSize = grid.cellSize;
+
+        if (horizontal)
+        {
+            var raw = worldPos.y;
+            cutCoordWorld = SnapToGrid(raw, cellSize.y, true);
+            cutCell = grid.WorldToCell(new Vector3(0, cutCoordWorld, 0));
+
+            var cellTop = grid.CellToWorld(cutCell).y + cellSize.y;
+            if (Mathf.Approximately(cutCoordWorld, cellTop))
+                cutCell.y += 1;
+
+            cutCell.y = Mathf.Clamp(cutCell.y, bounds.yMin + 1, bounds.yMax);
+            cutCoordWorld = grid.CellToWorld(new Vector3Int(0, cutCell.y, 0)).y;
+        }
+        else
+        {
+            var raw = worldPos.x;
+            cutCoordWorld = SnapToGrid(raw, cellSize.x, false);
+            cutCell = grid.WorldToCell(new Vector3(cutCoordWorld, 0, 0));
+
+            var cellRight = grid.CellToWorld(cutCell).x + cellSize.x;
+            if (Mathf.Approximately(cutCoordWorld, cellRight))
+                cutCell.x += 1;
+
+            cutCell.x = Mathf.Clamp(cutCell.x, bounds.xMin + 1, bounds.xMax);
+            cutCoordWorld = grid.CellToWorld(new Vector3Int(cutCell.x, 0, 0)).x;
+        }
+
+        return true;
     }
 
     private void SwapTilemapParts(Vector3Int cutCell, bool horizontal)
@@ -260,7 +337,7 @@ public class MapCutter : MonoBehaviour
         }
     }
 
-    private float SnapToGrid(float worldCoord, float tileSize, Grid grid, bool isHorizontal)
+    private float SnapToGrid(float worldCoord, float tileSize, bool isHorizontal)
     {
         var worldPoint = isHorizontal ? new Vector3(0, worldCoord, 0) : new Vector3(worldCoord, 0, 0);
         var cellPos = grid.WorldToCell(worldPoint);
@@ -269,16 +346,12 @@ public class MapCutter : MonoBehaviour
         if (isHorizontal)
         {
             var cellCenterY = cellCenterWorld.y;
-            if (worldCoord < cellCenterY)
-                return cellCenterY - halfTile;
-            return cellCenterY + halfTile;
+            return worldCoord < cellCenterY ? cellCenterY - halfTile : cellCenterY + halfTile;
         }
         else
         {
             var cellCenterX = cellCenterWorld.x;
-            if (worldCoord < cellCenterX)
-                return cellCenterX - halfTile;
-            return cellCenterX + halfTile;
+            return worldCoord < cellCenterX ? cellCenterX - halfTile : cellCenterX + halfTile;
         }
     }
 
