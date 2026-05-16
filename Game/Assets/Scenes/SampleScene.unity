@@ -146,11 +146,11 @@ PrefabInstance:
       objectReference: {fileID: 2144978245}
     - target: {fileID: 6196324144360905090, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.8677907
+      value: 7.38
       objectReference: {fileID: 0}
     - target: {fileID: 6196324144360905090, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.012919
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6196324144360905090, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -187,10 +187,6 @@ PrefabInstance:
     - target: {fileID: 6604115123995466001, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
       propertyPath: m_Name
       value: Charger
-      objectReference: {fileID: 0}
-    - target: {fileID: 6604115123995466001, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
-      propertyPath: m_TagString
-      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

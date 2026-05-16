@@ -9,6 +9,8 @@ namespace Script.Enemy
         
         public EnemyState currentState = EnemyState.Patrol;
         
+        [SerializeField] Animator animator;
+        
         [SerializeField] private float visionRange = 8f;
         [SerializeField] private float chargeDistance = 4f;
         
@@ -75,6 +77,7 @@ namespace Script.Enemy
             {
                 _currentPatrolIndex = (_currentPatrolIndex + 1) % patrolPoints.Length;
             }
+            
         }
         
         private void ApproachPlayer()
@@ -87,16 +90,21 @@ namespace Script.Enemy
         private IEnumerator ChargeRoutine()
         {
             _isChargingSequence = true;
-        
+            
             currentState = EnemyState.WindUp;
+            animator.SetTrigger("startWait");
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocityY); 
         
+            
+            
             _chargeDirection = new Vector2(Mathf.Sign(player.transform.position.x - transform.position.x), 0).normalized;
             Flip(_chargeDirection.x);
 
             yield return new WaitForSeconds(windUpTime);
 
             currentState = EnemyState.Charge;
+            animator.SetTrigger("startCharge");
+            
             var timer = 0f;
 
             while (timer < chargeDuration)
@@ -111,6 +119,7 @@ namespace Script.Enemy
 
             _isChargingSequence = false;
             currentState = EnemyState.Patrol;
+            animator.SetTrigger("startWalk");
         }
         
         private void Flip(float moveX)
