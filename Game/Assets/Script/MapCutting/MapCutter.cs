@@ -20,7 +20,7 @@ public class MapCutter : MonoBehaviour
 
     [SerializeField] private int availableCuts;
 
-    private InputManager inputManager;
+    [SerializeField] private InputManager inputManager;
     private Camera mainCamera;
     private float defaultZoom;
     private Grid grid;
@@ -30,7 +30,6 @@ public class MapCutter : MonoBehaviour
 
     private void Start()
     {
-        inputManager = GetComponent<InputManager>();
         mainCamera = Camera.main;
         defaultZoom = mainCamera.orthographicSize;
 
@@ -68,10 +67,12 @@ public class MapCutter : MonoBehaviour
 
     private void OnCutMenuPerformed(InputAction.CallbackContext ctx)
     {
+        Debug.Log("<color=green> ASSSSSSS");
         if (inputManager.IsUIMode || availableCuts <= 0)
             inputManager.SetGameplay();
         else
         {
+            Debug.Log("<color=green> WWWWWESSDSD");
             availableCuts--; 
             inputManager.SetUI();
         }

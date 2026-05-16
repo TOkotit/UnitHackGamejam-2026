@@ -5,7 +5,8 @@ namespace Script
 {
     public class InputManager : MonoBehaviour
     {
-        private GameInput2 gameInput;
+        private GameInput gameInput;
+        public GameInput GameInput => gameInput;
 
         public void SetGameplay()
         {
@@ -20,10 +21,10 @@ namespace Script
         }
         private void Awake()
         {
-            gameInput = new GameInput2();
+            gameInput = new GameInput();
         }
         public bool IsUIMode => gameInput.UI.enabled;
 
-        public GameInput2 GetGameInput() => gameInput;
+        public GameInput GetGameInput() => gameInput;
     }
 }
