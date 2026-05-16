@@ -184,6 +184,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6249183123234510185, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.054
+      objectReference: {fileID: 0}
     - target: {fileID: 6604115123995466001, guid: cc92a2be93884914895e2c86ec4d365f, type: 3}
       propertyPath: m_Name
       value: Charger

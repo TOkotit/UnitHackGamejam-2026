@@ -111,7 +111,11 @@ namespace Script.Character
 
             var scale = spriteTransform.localScale;
             scale.x = Mathf.Abs(scale.x) * directionX;
+            
+            var pos = spriteTransform.position;
+            pos.x = Mathf.Abs(pos.x) * directionX;
             spriteTransform.localScale = scale;
+            spriteTransform.position = pos;
         }
         
         private IEnumerator AttackAnimtation(GameObject splash)

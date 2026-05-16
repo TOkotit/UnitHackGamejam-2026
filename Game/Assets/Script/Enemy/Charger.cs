@@ -10,7 +10,7 @@ namespace Script.Enemy
         public EnemyState currentState = EnemyState.Patrol;
         
         [SerializeField] Animator animator;
-        
+        [SerializeField] Transform spriteTransform;
         [SerializeField] private float visionRange = 8f;
         [SerializeField] private float chargeDistance = 4f;
         
@@ -124,8 +124,15 @@ namespace Script.Enemy
         
         private void Flip(float moveX)
         {
-            if (moveX > 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            else if (moveX < 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            if (!spriteTransform) return;
+
+            var scale = spriteTransform.localScale;
+            scale.x = Mathf.Abs(scale.x) * moveX;
+            
+            var pos = spriteTransform.position;
+            pos.x = Mathf.Abs(pos.x) * moveX;
+            spriteTransform.localScale = scale;
+            spriteTransform.position = pos;
         }
         
         private void OnDrawGizmosSelected()
