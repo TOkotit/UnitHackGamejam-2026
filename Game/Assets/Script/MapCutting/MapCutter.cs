@@ -20,7 +20,6 @@ public class MapCutter : MonoBehaviour
 
     [SerializeField] private int availableCuts;
 
-
     [Header("Подсветка линии разреза")]
     [SerializeField] private LineRenderer cutLine;
     [SerializeField] private Color lineColor = Color.red;
@@ -33,6 +32,8 @@ public class MapCutter : MonoBehaviour
 
     private bool isHorizontal = false;
     private Vector2 currentMouseWorldPos;
+
+    private Coroutine zoomCoroutine;
 
     private void Start()
     {
@@ -70,6 +71,8 @@ public class MapCutter : MonoBehaviour
         }
 
         inputManager.SetGameplay();
+        Time.timeScale = 1f;
+        mainCamera.orthographicSize = defaultZoom;
     }
 
     private void Update()
@@ -95,6 +98,7 @@ public class MapCutter : MonoBehaviour
             gameInput.UI.Point.canceled -= OnPointCanceled;
             gameInput.Gameplay.CutMenu.performed -= OnCutMenuPerformed;
         }
+        Time.timeScale = 1f;
     }
 
     private void OnCutMenuPerformed(InputAction.CallbackContext ctx)
@@ -102,6 +106,7 @@ public class MapCutter : MonoBehaviour
         if (inputManager.IsUIMode || availableCuts <= 0)
         {
             inputManager.SetGameplay();
+            ExitCutMode();
         }
         else
         {
@@ -112,7 +117,36 @@ public class MapCutter : MonoBehaviour
                 currentMouseWorldPos = mainCamera.ScreenToWorldPoint(screenPos);
             }
             inputManager.SetUI();
+            EnterCutMode();
         }
+    }
+
+    private void EnterCutMode()
+    {
+        Time.timeScale = 0f;
+        if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
+        zoomCoroutine = StartCoroutine(AnimateCameraZoom(defaultZoom + zoomOutAmount));
+    }
+
+    private void ExitCutMode()
+    {
+        Time.timeScale = 1f;
+        if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
+        zoomCoroutine = StartCoroutine(AnimateCameraZoom(defaultZoom));
+    }
+
+    private IEnumerator AnimateCameraZoom(float targetZoom)
+    {
+        float startZoom = mainCamera.orthographicSize;
+        float elapsed = 0f;
+        while (elapsed < zoomDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = elapsed / zoomDuration;
+            mainCamera.orthographicSize = Mathf.Lerp(startZoom, targetZoom, t);
+            yield return null;
+        }
+        mainCamera.orthographicSize = targetZoom;
     }
 
     private void OnCutPerformed(InputAction.CallbackContext ctx)
@@ -215,9 +249,8 @@ public class MapCutter : MonoBehaviour
             obj.transform.position = pos;
         }
 
-        StopAllCoroutines();
-        StartCoroutine(ZoomEffect());
         inputManager.SetGameplay();
+        ExitCutMode();
     }
 
     private bool TryGetCutLineData(Vector3 worldPos, bool horizontal, out float cutCoordWorld, out Vector3Int cutCell)
@@ -353,26 +386,5 @@ public class MapCutter : MonoBehaviour
             var cellCenterX = cellCenterWorld.x;
             return worldCoord < cellCenterX ? cellCenterX - halfTile : cellCenterX + halfTile;
         }
-    }
-
-    private IEnumerator ZoomEffect()
-    {
-        var elapsed = 0f;
-        var startZoom = mainCamera.orthographicSize;
-        var targetZoom = startZoom + zoomOutAmount;
-        while (elapsed < zoomDuration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            mainCamera.orthographicSize = Mathf.Lerp(startZoom, targetZoom, elapsed / zoomDuration);
-            yield return null;
-        }
-        elapsed = 0f;
-        while (elapsed < zoomDuration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            mainCamera.orthographicSize = Mathf.Lerp(targetZoom, startZoom, elapsed / zoomDuration);
-            yield return null;
-        }
-        mainCamera.orthographicSize = startZoom;
     }
 }
