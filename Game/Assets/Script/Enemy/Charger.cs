@@ -8,9 +8,9 @@ namespace Script.Enemy
     {
         
         public EnemyState currentState = EnemyState.Patrol;
-        
+        [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] Animator animator;
-        
+        [SerializeField] private GameObject attackZone;
         [SerializeField] private float visionRange = 8f;
         [SerializeField] private float chargeDistance = 4f;
         
@@ -33,6 +33,7 @@ namespace Script.Enemy
         private void Start()
         {
             _rb = GetComponent<Rigidbody2D>();
+            attackZone.SetActive(false);
         }
         
         void Update()
@@ -104,7 +105,7 @@ namespace Script.Enemy
 
             currentState = EnemyState.Charge;
             animator.SetTrigger("startCharge");
-            
+            attackZone.SetActive(true);
             var timer = 0f;
 
             while (timer < chargeDuration)
@@ -119,13 +120,16 @@ namespace Script.Enemy
 
             _isChargingSequence = false;
             currentState = EnemyState.Patrol;
+            attackZone.SetActive(false);
             animator.SetTrigger("startWalk");
         }
         
         private void Flip(float moveX)
         {
-            if (moveX > 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            else if (moveX < 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            if (moveX > 0) 
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            else if (moveX < 0) 
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         
         private void OnDrawGizmosSelected()

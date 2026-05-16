@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 5958962561816120229}
   - component: {fileID: 1636500784101023322}
   - component: {fileID: 7451345573200591153}
+  - component: {fileID: 6514560994501086551}
   - component: {fileID: 3476798635722210979}
   - component: {fileID: 1115352449104733821}
   - component: {fileID: 7573405343673156250}
@@ -242,6 +243,23 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fa49c6a0711efe54692cb7653e873ada, type: 3}
   - {fileID: 8300000, guid: 724cb354087fada4188f0a561966f2cb, type: 3}
   spriteTransform: {fileID: 5905962846527309646}
+--- !u!114 &6514560994501086551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6694944636787542838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c996967ed44c4092ece80bf3c41ebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  invincibilityDuration: 1.5
+  blinkInterval: 0.1
+  blinkColor: {r: 1, g: 1, b: 1, a: 0.5}
+  spriteRenderer: {fileID: 4461527291395980976}
 --- !u!50 &3476798635722210979
 Rigidbody2D:
   serializedVersion: 5
