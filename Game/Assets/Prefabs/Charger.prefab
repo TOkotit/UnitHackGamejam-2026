@@ -421,7 +421,7 @@ Transform:
   m_GameObject: {fileID: 4683260123990563097}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.007, y: 0.048, z: 0}
+  m_LocalPosition: {x: 0.0848, y: 0.0785, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -627,8 +627,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 4225845900392934551}
   animator: {fileID: 1700874578600822683}
+  attackZone: {fileID: 4683260123990563097}
   spriteTransform: {fileID: 6249183123234510185}
   visionRange: 8
   chargeDistance: 4
