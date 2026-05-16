@@ -31,7 +31,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5958962561816120229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6694944636787542838
+--- !u!1 &3246101706930585787
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,42 +39,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5958962561816120229}
-  - component: {fileID: 6007713410876319650}
-  - component: {fileID: 1636500784101023322}
-  - component: {fileID: 7451345573200591153}
-  - component: {fileID: 3476798635722210979}
-  - component: {fileID: 1115352449104733821}
+  - component: {fileID: 5905962846527309646}
+  - component: {fileID: 4461527291395980976}
+  - component: {fileID: 1100914399229955393}
   m_Layer: 0
-  m_Name: Character
-  m_TagString: Player
+  m_Name: Square
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5958962561816120229
+--- !u!4 &5905962846527309646
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6694944636787542838}
+  m_GameObject: {fileID: 3246101706930585787}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.66, y: -1.66, z: 0}
-  m_LocalScale: {x: 1.0371767, y: 1.7864652, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7925575942429382756}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 5958962561816120229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6007713410876319650
+--- !u!212 &4461527291395980976
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6694944636787542838}
+  m_GameObject: {fileID: 3246101706930585787}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -112,7 +108,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 270932301, guid: ac8abfb06d3349a4e86678c7d90b513e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,6 +119,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1100914399229955393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3246101706930585787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ded9d37d09e44345b21561ec4a01119f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PixelsPerUnit: 8
+--- !u!1 &6694944636787542838
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5958962561816120229}
+  - component: {fileID: 1636500784101023322}
+  - component: {fileID: 7451345573200591153}
+  - component: {fileID: 3476798635722210979}
+  - component: {fileID: 1115352449104733821}
+  m_Layer: 0
+  m_Name: Character
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5958962561816120229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6694944636787542838}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.66, y: -1.66, z: 0}
+  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7925575942429382756}
+  - {fileID: 5905962846527309646}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1636500784101023322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlashPrefab: {fileID: 615587678937226168, guid: ac8ddbf3f3e49e243aaa3771d78fc557, type: 3}
   WalikingSpeed: 5
-  DashSpeed: 15
+  DashSpeed: 2
   jumpForce: 15
   characterRB: {fileID: 3476798635722210979}
   groundCheck: {fileID: 7925575942429382756}
