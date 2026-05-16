@@ -37,7 +37,7 @@ public class MapCutter : MonoBehaviour
         if (tilemap)
         {
             grid = tilemap.layoutGrid;
-            tilemap.CompressBounds(); 
+            tilemap.CompressBounds();
         }
 
         var gameInput = inputManager.GetGameInput();
@@ -72,10 +72,9 @@ public class MapCutter : MonoBehaviour
             inputManager.SetGameplay();
         else
         {
-            availableCuts--; 
+            availableCuts--;
             inputManager.SetUI();
         }
-            
     }
 
     private void OnCutPerformed(InputAction.CallbackContext ctx)
@@ -114,6 +113,9 @@ public class MapCutter : MonoBehaviour
         var bounds = tilemap.cellBounds;
         if (bounds.size.x <= 0 || bounds.size.y <= 0) return;
 
+        var cellPosAtMouse = grid.WorldToCell(mouseWorldPos);
+        if (!bounds.Contains(cellPosAtMouse)) return;
+
         var cellSize = grid.cellSize;
         float cutCoordWorld;
         Vector3Int cutCell;
@@ -122,11 +124,11 @@ public class MapCutter : MonoBehaviour
         {
             cutCoordWorld = SnapToGrid(mouseWorldPos.y, cellSize.y, grid, true);
             cutCell = grid.WorldToCell(new Vector3(0, cutCoordWorld, 0));
-            
+
             var cellTop = grid.CellToWorld(cutCell).y + cellSize.y;
             if (Mathf.Approximately(cutCoordWorld, cellTop))
                 cutCell.y += 1;
-            
+
             cutCell.y = Mathf.Clamp(cutCell.y, bounds.yMin + 1, bounds.yMax);
             cutCoordWorld = grid.CellToWorld(new Vector3Int(0, cutCell.y, 0)).y;
         }
@@ -134,11 +136,11 @@ public class MapCutter : MonoBehaviour
         {
             cutCoordWorld = SnapToGrid(mouseWorldPos.x, cellSize.x, grid, false);
             cutCell = grid.WorldToCell(new Vector3(cutCoordWorld, 0, 0));
-            
+
             var cellRight = grid.CellToWorld(cutCell).x + cellSize.x;
             if (Mathf.Approximately(cutCoordWorld, cellRight))
                 cutCell.x += 1;
-            
+
             cutCell.x = Mathf.Clamp(cutCell.x, bounds.xMin + 1, bounds.xMax);
             cutCoordWorld = grid.CellToWorld(new Vector3Int(cutCell.x, 0, 0)).x;
         }
@@ -186,6 +188,27 @@ public class MapCutter : MonoBehaviour
         var bounds = tilemap.cellBounds;
         if (bounds.size.x <= 0 || bounds.size.y <= 0) return;
 
+        if (horizontal)
+        {
+            var minY = bounds.yMin;
+            var maxY = bounds.yMax - 1;
+            var cutY = cutCell.y;
+            if (cutY <= minY || cutY > maxY + 1) return;
+            var aSize = cutY - minY;
+            var bSize = maxY - cutY + 1;
+            if (aSize <= 0 || bSize <= 0) return;
+        }
+        else
+        {
+            var minX = bounds.xMin;
+            var maxX = bounds.xMax - 1;
+            var cutX = cutCell.x;
+            if (cutX <= minX || cutX > maxX + 1) return;
+            var aSize = cutX - minX;
+            var bSize = maxX - cutX + 1;
+            if (aSize <= 0 || bSize <= 0) return;
+        }
+
         var originalTiles = new Dictionary<Vector3Int, TileBase>();
         foreach (var pos in bounds.allPositionsWithin)
         {
@@ -200,11 +223,8 @@ public class MapCutter : MonoBehaviour
             var minY = bounds.yMin;
             var maxY = bounds.yMax - 1;
             var cutY = cutCell.y;
-            if (cutY <= minY || cutY > maxY + 1) return;
-
             var aSize = cutY - minY;
             var bSize = maxY - cutY + 1;
-            if (aSize <= 0 || bSize <= 0) return;
 
             foreach (var kvp in originalTiles)
             {
@@ -223,11 +243,8 @@ public class MapCutter : MonoBehaviour
             var minX = bounds.xMin;
             var maxX = bounds.xMax - 1;
             var cutX = cutCell.x;
-            if (cutX <= minX || cutX > maxX + 1) return;
-
             var aSize = cutX - minX;
             var bSize = maxX - cutX + 1;
-            if (aSize <= 0 || bSize <= 0) return;
 
             foreach (var kvp in originalTiles)
             {
@@ -254,16 +271,14 @@ public class MapCutter : MonoBehaviour
             var cellCenterY = cellCenterWorld.y;
             if (worldCoord < cellCenterY)
                 return cellCenterY - halfTile;
-            else
-                return cellCenterY + halfTile;
+            return cellCenterY + halfTile;
         }
         else
         {
             var cellCenterX = cellCenterWorld.x;
             if (worldCoord < cellCenterX)
                 return cellCenterX - halfTile;
-            else
-                return cellCenterX + halfTile;
+            return cellCenterX + halfTile;
         }
     }
 
