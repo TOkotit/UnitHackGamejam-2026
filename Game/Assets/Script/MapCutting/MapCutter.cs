@@ -108,27 +108,27 @@ public class MapCutter : MonoBehaviour
         else
             cutCoordWorld = SnapToGrid(mouseWorldPos.x, grid.cellSize.x, grid, false);
         
-        Vector3Int cutCell = grid.WorldToCell(isHorizontal
+        var cutCell = grid.WorldToCell(isHorizontal
             ? new Vector3(0, cutCoordWorld, 0)
             : new Vector3(cutCoordWorld, 0, 0));
 
         SwapTilemapParts(cutCell, isHorizontal);
 
-        BoundsInt bounds = tilemap.cellBounds;
-        Vector3 minWorld = tilemap.CellToWorld(bounds.min);
-        Vector3 maxWorld = tilemap.CellToWorld(bounds.max) + grid.cellSize;
+        var bounds = tilemap.cellBounds;
+        var minWorld = tilemap.CellToWorld(bounds.min);
+        var maxWorld = tilemap.CellToWorld(bounds.max) + grid.cellSize;
 
         foreach (var obj in allCuttableObjects)
         {
-            if (obj == null) continue;
-            Vector3 pos = obj.transform.position;
+            if (!obj) continue;
+            var pos = obj.transform.position;
 
             if (isHorizontal)
             {
-                float aSize = cutCoordWorld - minWorld.y;
-                float bSize = maxWorld.y - cutCoordWorld;
+                var aSize = cutCoordWorld - minWorld.y;
+                var bSize = maxWorld.y - cutCoordWorld;
                 if (aSize <= 0 || bSize <= 0) continue;
-                float offset = pos.y - minWorld.y;
+                var offset = pos.y - minWorld.y;
                 if (offset < aSize)
                     pos.y = pos.y + bSize;          
                 else
@@ -155,13 +155,13 @@ public class MapCutter : MonoBehaviour
 
     private void SwapTilemapParts(Vector3Int cutCell, bool horizontal)
     {
-        BoundsInt bounds = tilemap.cellBounds;
+        var bounds = tilemap.cellBounds;
         if (bounds.size.x <= 0 || bounds.size.y <= 0) return;
 
         Dictionary<Vector3Int, TileBase> originalTiles = new();
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
-            TileBase tile = tilemap.GetTile(pos);
+            var tile = tilemap.GetTile(pos);
             if (tile)
                 originalTiles[pos] = tile;
         }
@@ -169,19 +169,19 @@ public class MapCutter : MonoBehaviour
 
         if (horizontal)
         {
-            int minY = bounds.yMin;
-            int maxY = bounds.yMax - 1;
-            int cutY = cutCell.y;
+            var minY = bounds.yMin;
+            var maxY = bounds.yMax - 1;
+            var cutY = cutCell.y;
             if (cutY <= minY || cutY > maxY + 1) return;
 
-            int aSize = cutY - minY;       
-            int bSize = maxY - cutY + 1;   
+            var aSize = cutY - minY;       
+            var bSize = maxY - cutY + 1;   
             if (aSize <= 0 || bSize <= 0) return;
 
             foreach (var kvp in originalTiles)
             {
-                Vector3Int oldPos = kvp.Key;
-                Vector3Int newPos = oldPos;
+                var oldPos = kvp.Key;
+                var newPos = oldPos;
                 if (oldPos.y < cutY)
                 {
                     newPos.y = oldPos.y + bSize;
@@ -197,13 +197,13 @@ public class MapCutter : MonoBehaviour
         }
         else 
         {
-            int minX = bounds.xMin;
-            int maxX = bounds.xMax - 1;
-            int cutX = cutCell.x;
+            var minX = bounds.xMin;
+            var maxX = bounds.xMax - 1;
+            var cutX = cutCell.x;
             if (cutX <= minX || cutX > maxX + 1) return;
 
-            int aSize = cutX - minX;       
-            int bSize = maxX - cutX + 1;   
+            var aSize = cutX - minX;       
+            var bSize = maxX - cutX + 1;   
             if (aSize <= 0 || bSize <= 0) return;
 
             foreach (var kvp in originalTiles)
