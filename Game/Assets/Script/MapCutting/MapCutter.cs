@@ -67,7 +67,6 @@ public class MapCutter : MonoBehaviour
 
     private void OnCutMenuPerformed(InputAction.CallbackContext ctx)
     {
-        Debug.Log("<color=green> ASSSSSSS");
         if (inputManager.IsUIMode || availableCuts <= 0)
             inputManager.SetGameplay();
         else
