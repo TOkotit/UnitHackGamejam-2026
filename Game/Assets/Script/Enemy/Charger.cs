@@ -128,11 +128,8 @@ namespace Script.Enemy
 
             var scale = spriteTransform.localScale;
             scale.x = Mathf.Abs(scale.x) * moveX;
-            
-            var pos = spriteTransform.position;
-            pos.x = Mathf.Abs(pos.x) * moveX;
             spriteTransform.localScale = scale;
-            spriteTransform.position = pos;
+            
         }
         
         private void OnDrawGizmosSelected()
