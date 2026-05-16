@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterMovement: {fileID: 7451345573200591153}
+  _inputManager: {fileID: 0}
 --- !u!114 &7451345573200591153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlashPrefab: {fileID: 615587678937226168, guid: ac8ddbf3f3e49e243aaa3771d78fc557, type: 3}
   WalikingSpeed: 5
-  DashSpeed: 2
+  DashSpeed: 15
   jumpForce: 15
   characterRB: {fileID: 3476798635722210979}
   groundCheck: {fileID: 7925575942429382756}

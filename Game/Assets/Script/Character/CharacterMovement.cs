@@ -26,16 +26,13 @@ namespace Script.Character
 
         public void Jump()
         {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
-            
             if(isGrounded)
-                characterRB.linearVelocity = new Vector2(0, jumpForce);
-        }
+                characterRB.linearVelocity = new Vector2(characterRB.linearVelocity.x, jumpForce);        }
 
         public void Move(Vector2 moveDirection)
         {
             if(!isAttacking)
-                transform.Translate(moveDirection * (WalikingSpeed * Time.fixedDeltaTime));
+                characterRB.linearVelocity = new Vector2(moveDirection.x * WalikingSpeed, characterRB.linearVelocity.y);
             
         }
 
@@ -68,16 +65,7 @@ namespace Script.Character
 
         private void DashWithAttack(float attackDirection)
         {
-            if (attackDirection > 0)
-            {
-                transform.position += new Vector3(DashSpeed, 0f, 0f);
-            }
-            else
-            {
-                transform.position += new Vector3(-DashSpeed, 0f, 0f);
-
-            }
-            
+            characterRB.linearVelocityX += attackDirection * DashSpeed;
         }
         
         private void FixedUpdate()
