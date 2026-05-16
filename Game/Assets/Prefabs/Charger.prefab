@@ -302,6 +302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Charger
       objectReference: {fileID: 0}
+    - target: {fileID: 6694944636787542838, guid: f2b9c10fc86437e46918b227346a1fea, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 7451345573200591153, guid: f2b9c10fc86437e46918b227346a1fea, type: 3}
       propertyPath: DashSpeed
       value: 2
