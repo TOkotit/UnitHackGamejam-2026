@@ -20,12 +20,13 @@ public class MapCutter : MonoBehaviour
 
     [SerializeField] private int availableCuts;
 
+
     [Header("Подсветка линии разреза")]
     [SerializeField] private LineRenderer cutLine;
     [SerializeField] private Color lineColor = Color.red;
     [SerializeField] private float lineWidth = 0.1f;
+    [SerializeField] private InputManager inputManager;
 
-    private InputManager inputManager;
     private Camera mainCamera;
     private float defaultZoom;
     private Grid grid;
@@ -35,7 +36,6 @@ public class MapCutter : MonoBehaviour
 
     private void Start()
     {
-        inputManager = GetComponent<InputManager>();
         mainCamera = Camera.main;
         defaultZoom = mainCamera.orthographicSize;
 
