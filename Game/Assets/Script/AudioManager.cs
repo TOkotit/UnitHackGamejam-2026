@@ -28,9 +28,15 @@ namespace Script
                 return;
             }
 
-            if (musicSource) return;
-            musicSource = GetComponent<AudioSource>();
-            musicSource.loop = true;
+            if (!musicSource)
+            {
+                musicSource = GetComponent<AudioSource>();
+            }
+            
+            if (musicSource != null)
+            {
+                musicSource.loop = true;
+            }
         }
         
         public void PlayMusic(AudioClip clip)

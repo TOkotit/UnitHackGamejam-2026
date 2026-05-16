@@ -142,6 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d828cc54befc425ca9f6703e5334ca7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 0}
+  musicSource: {fileID: 4856205350498449166}
   defaultFadeDuration: 1
   fadeDuration: 1
