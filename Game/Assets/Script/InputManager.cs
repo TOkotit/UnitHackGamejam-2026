@@ -6,7 +6,17 @@ namespace Script
     public class InputManager : MonoBehaviour
     {
         private GameInput gameInput;
-        public GameInput GameInput => gameInput;
+        public GameInput GameInput
+        {
+            get
+            {
+                if (gameInput == null)
+                {
+                    gameInput = new GameInput();
+                }
+                return gameInput;
+            }
+        }
 
         public void SetGameplay()
         {
@@ -18,10 +28,6 @@ namespace Script
         {
             gameInput.Disable();
             gameInput.UI.Enable();
-        }
-        private void Awake()
-        {
-            gameInput = new GameInput();
         }
         public bool IsUIMode => gameInput.UI.enabled;
 
