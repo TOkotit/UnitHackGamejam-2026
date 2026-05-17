@@ -77,7 +77,7 @@ namespace Script.Character
             isInvincible = false; 
         }
 
-        private void Die()
+        public void Die()
         {
             GameSceneManager.ReloadCurrentScene();
         }
