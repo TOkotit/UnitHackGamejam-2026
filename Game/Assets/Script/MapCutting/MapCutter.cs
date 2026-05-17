@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -20,7 +22,9 @@ public class MapCutter : MonoBehaviour
     [SerializeField] private List<GameObject> allCuttableObjects = new();
 
     [SerializeField] private int availableCuts;
-
+    private int maxCuts;
+    [SerializeField] private TextMeshPro cutsText;
+    
     [Header("Подсветка линии разреза")]
     [SerializeField] private LineRenderer cutLine;
     [SerializeField] private Color lineColor = Color.red;
@@ -38,8 +42,31 @@ public class MapCutter : MonoBehaviour
 
     private Coroutine zoomCoroutine;
     private Coroutine backgroundCoroutine;
+    public event Action<int> cutAttempted;
+    
+    public int AvailableCuts
+    {
+        get => availableCuts;
+        set
+        {
+            
+            cutAttempted?.Invoke(value);
+            availableCuts = value;
+        }
+    }
+    
+    
     private void Start()
     {
+        maxCuts = AvailableCuts;
+        AvailableCuts = maxCuts;
+        OnCutsChanged(maxCuts);
+        
+        if (cutsText != null)
+        {
+            cutAttempted += OnCutsChanged;
+        }
+        
         mainCamera = Camera.main;
         defaultZoom = mainCamera.orthographicSize;
 
@@ -107,9 +134,14 @@ public class MapCutter : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    private void OnCutsChanged(int i)
+    {
+        cutsText.text = $"{i}/{maxCuts}";
+    }
+    
     private void OnCutMenuPerformed(InputAction.CallbackContext ctx)
     {
-        if (inputManager.IsUIMode || availableCuts <= 0)
+        if (inputManager.IsUIMode || AvailableCuts <= 0)
         {
             inputManager.SetGameplay();
             ExitCutMode();
@@ -252,7 +284,7 @@ public class MapCutter : MonoBehaviour
 
         if (!TryGetCutLineData(mouseWorldPos, isHorizontal, out var cutCoordWorld, out var cutCell))
             return;
-        availableCuts--;
+        AvailableCuts--;
 
         SwapTilemapParts(cutCell, isHorizontal);
 

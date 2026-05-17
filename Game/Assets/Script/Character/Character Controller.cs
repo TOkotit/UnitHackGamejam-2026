@@ -6,6 +6,7 @@ namespace Script.Character
         public class CharacterController : MonoBehaviour
         {
                 private Vector2 moveDirection;
+                [SerializeField] private CharacterHealth health;
                 [SerializeField] CharacterMovement _characterMovement;
                 [SerializeField] InputManager _inputManager;
 
@@ -14,13 +15,14 @@ namespace Script.Character
                 {
                         _inputManager.GameInput.Gameplay.Attack.performed += OnAttack;
                         _inputManager.GameInput.Gameplay.Jump.performed += OnJump;
+                        _inputManager.GameInput.Gameplay.Restart.performed += OnRestart;
                 }
 
                 private void OnDisable()
                 {
                         _inputManager.GameInput.Gameplay.Disable();
                         _inputManager.GameInput.Gameplay.Attack.performed -= OnAttack;
-
+                        _inputManager.GameInput.Gameplay.Restart.performed -= OnRestart;
                 }
 
                 private void FixedUpdate()
@@ -42,7 +44,11 @@ namespace Script.Character
                         _characterMovement.Attack(mouseScreenPosition);
                 }
 
-
+                private void OnRestart(InputAction.CallbackContext context)
+                {
+                        if (health != null)
+                                health.Die();
+                }
 
         }
 }

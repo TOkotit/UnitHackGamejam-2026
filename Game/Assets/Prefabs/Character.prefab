@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c77cca711afa7349bc2aeb7734a01d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 6514560994501086551}
   _characterMovement: {fileID: 7451345573200591153}
   _inputManager: {fileID: 0}
 --- !u!114 &7451345573200591153
