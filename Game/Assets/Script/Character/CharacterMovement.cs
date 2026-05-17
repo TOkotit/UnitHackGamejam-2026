@@ -15,7 +15,8 @@ namespace Script.Character
         [SerializeField] private Transform groundCheck;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float checkRadius = 0.2f;
-        
+        [SerializeField] private Animator animator;
+
         
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip[] footstepClips;
@@ -34,9 +35,12 @@ namespace Script.Character
                 characterRB = GetComponent<Rigidbody2D>();
             if (!audioSource)
                 audioSource = GetComponent<AudioSource>();
+            
+            if (!animator)
+                animator = GetComponentInChildren<Animator>();
+            
             if (!spriteTransform)
             {
-                var animator = GetComponentInChildren<Animator>();
                 if (animator != null) spriteTransform = animator.transform;
             }
         }
@@ -48,8 +52,19 @@ namespace Script.Character
 
         public void Move(Vector2 moveDirection)
         {
-            if(!isAttacking)
+            if (!isAttacking)
+            {
                 characterRB.linearVelocity = new Vector2(moveDirection.x * WalikingSpeed, characterRB.linearVelocity.y);
+            }
+
+            if (moveDirection.x != 0)
+            {
+                animator.SetBool("walk", true);
+            }
+            else
+            {
+                animator.SetBool("walk", false);
+            }
            if (Mathf.Abs(moveDirection.x) > 0.05f)
             {
                 var directionX = moveDirection.x > 0 ? 1f : -1f;
@@ -86,29 +101,30 @@ namespace Script.Character
 
         public void Attack(Vector2 mouseScreenPosition)
         {
-            isAttacking = true;
+            if (isAttacking) return;
+            
             if (Camera.main == null) return;
+            
+            
+            if (animator != null)
+            {
+                animator.SetTrigger("attack");
+            }
+            
             var mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-
             var attackDirectionX = mouseWorldPosition.x > transform.position.x ? 1f : -1f;
+            
             FlipSprite(attackDirectionX);
+            isAttacking = true;
             DashWithAttack(attackDirectionX);
-            var spawnPosition = transform.position + new Vector3(attackDirectionX * 2f, 0f, 0f);
-            var splash = Instantiate(SlashPrefab, spawnPosition, Quaternion.identity);
-            splash.transform.SetParent(transform);
-            var currentScale = splash.transform.localScale;
-            if (attackDirectionX < 0)
-                currentScale.x = -Mathf.Abs(currentScale.x);
-            else
-                currentScale.x = Mathf.Abs(currentScale.x);
-            splash.transform.localScale = currentScale;
             PlayAttackSound();
-            StartCoroutine(AttackAnimtation(splash));
+            
+            StartCoroutine(AttackAnimationRoutine(attackDirectionX));
         }
         private void FlipSprite(float directionX)
         {
             if (!spriteTransform) return;
-
+            if(isAttacking) return;
             var scale = spriteTransform.localScale;
             scale.x = Mathf.Abs(scale.x) * directionX;
             
@@ -117,9 +133,37 @@ namespace Script.Character
             
         }
         
-        private IEnumerator AttackAnimtation(GameObject splash)
+        private IEnumerator AttackAnimationRoutine(float attackDirectionX)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return null;
+
+            var totalAnimationLength = 0.4f;
+            
+            if (animator)
+            {
+                var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("Attack")) 
+                {
+                    totalAnimationLength = stateInfo.length;
+                }
+            }
+
+            var delayBeforeSlash = totalAnimationLength * 0.25f;
+            var remainingTime = totalAnimationLength - delayBeforeSlash;
+
+            yield return new WaitForSeconds(delayBeforeSlash);
+
+            GameObject splash = null;
+            var samplePosition = transform.position + new Vector3(attackDirectionX * 2f, 0f, 0f);
+            splash = Instantiate(SlashPrefab, samplePosition, Quaternion.identity);
+            splash.transform.SetParent(transform);
+            
+            var currentScale = splash.transform.localScale;
+            currentScale.x = Mathf.Abs(currentScale.x) * attackDirectionX;
+            splash.transform.localScale = currentScale;
+
+            yield return new WaitForSeconds(remainingTime);
+            
             Destroy(splash);
             isAttacking = false;
         }

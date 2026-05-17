@@ -230,6 +230,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   checkRadius: 0.2
+  animator: {fileID: 1201882031829098276}
   audioSource: {fileID: 7573405343673156250}
   footstepClips:
   - {fileID: 8300000, guid: fd885a227c6c1ea49adca9ce14e77dce, type: 3}
