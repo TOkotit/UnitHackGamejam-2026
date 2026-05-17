@@ -138,7 +138,8 @@ public class MapCutter : MonoBehaviour
         if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
         zoomCoroutine = StartCoroutine(AnimateCameraZoom(defaultZoom + zoomOutAmount));
         if (background == null) return;
-        backgroundCoroutine = StartCoroutine(AnimateBackground(2 * new Vector3(16f, 16f, 1f)));
+        backgroundCoroutine = StartCoroutine(AnimateBackground(2 * background.transform.localScale));
+        
     }
 
     private void ExitCutMode()
@@ -148,7 +149,7 @@ public class MapCutter : MonoBehaviour
         if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
         zoomCoroutine = StartCoroutine(AnimateCameraZoom(defaultZoom));
         if (background == null) return;
-        backgroundCoroutine = StartCoroutine(AnimateBackground(new Vector3(16f, 16f, 1f)));
+        backgroundCoroutine = StartCoroutine(AnimateBackground(background.transform.localScale / 2));
     }
 
     private IEnumerator AnimateCameraZoom(float targetZoom)
