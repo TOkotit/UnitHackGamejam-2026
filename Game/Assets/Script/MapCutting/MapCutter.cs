@@ -14,7 +14,8 @@ public class MapCutter : MonoBehaviour
     [Header("Камера")]
     [SerializeField] private float zoomOutAmount = 3f;
     [SerializeField] private float zoomDuration = 0.4f;
-
+    [SerializeField] private GameObject background;
+    
     [Header("Разрезаемые объекты")]
     [SerializeField] private List<GameObject> allCuttableObjects = new();
 
@@ -26,6 +27,8 @@ public class MapCutter : MonoBehaviour
     [SerializeField] private float lineWidth = 0.1f;
     [SerializeField] private InputManager inputManager;
 
+    
+    
     private Camera mainCamera;
     private float defaultZoom;
     private Grid grid;
@@ -34,7 +37,7 @@ public class MapCutter : MonoBehaviour
     private Vector2 currentMouseWorldPos;
 
     private Coroutine zoomCoroutine;
-
+    private Coroutine backgroundCoroutine;
     private void Start()
     {
         mainCamera = Camera.main;
@@ -131,15 +134,21 @@ public class MapCutter : MonoBehaviour
     private void EnterCutMode()
     {
         Time.timeScale = 0f;
+        if (backgroundCoroutine != null) StopCoroutine(backgroundCoroutine);
         if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
         zoomCoroutine = StartCoroutine(AnimateCameraZoom(defaultZoom + zoomOutAmount));
+        if (background == null) return;
+        backgroundCoroutine = StartCoroutine(AnimateBackground(2 * new Vector3(16f, 16f, 1f)));
     }
 
     private void ExitCutMode()
     {
         Time.timeScale = 1f;
+        if (backgroundCoroutine != null) StopCoroutine(backgroundCoroutine);
         if (zoomCoroutine != null) StopCoroutine(zoomCoroutine);
         zoomCoroutine = StartCoroutine(AnimateCameraZoom(defaultZoom));
+        if (background == null) return;
+        backgroundCoroutine = StartCoroutine(AnimateBackground(new Vector3(16f, 16f, 1f)));
     }
 
     private IEnumerator AnimateCameraZoom(float targetZoom)
@@ -156,6 +165,21 @@ public class MapCutter : MonoBehaviour
         mainCamera.orthographicSize = targetZoom;
     }
 
+    private IEnumerator AnimateBackground(Vector3 scale)
+    {
+        
+        var startZoom = background.transform.localScale;
+        var elapsed = 0f;
+        while (elapsed < zoomDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = elapsed / zoomDuration;
+            background.transform.localScale = Vector3.Lerp(startZoom, scale, t);
+            yield return null;
+        }
+        background.transform.localScale = scale;
+    }
+    
     private void OnCutPerformed(InputAction.CallbackContext ctx)
     {
         if (!inputManager.IsUIMode) return;
