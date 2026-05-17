@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7f925c6ab0ceff74ba50061beb039fb9
+guid: da9a5c1e573c13f43bdd750869a1efdc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6905213351768541085
-    second: MainmenuScreen_0
+      213: 8509999045520685461
+    second: TV 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MainmenuScreen_0
+      name: TV 1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 480
-        height: 240
+        x: 8
+        y: 6
+        width: 184
+        height: 181
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3683d8dba01cb20a0800000000000000
-      internalID: -6905213351768541085
+      spriteID: 5997c234b07991670800000000000000
+      internalID: 8509999045520685461
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MainmenuScreen_0: -6905213351768541085
+      TV 1_0: 8509999045520685461
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
