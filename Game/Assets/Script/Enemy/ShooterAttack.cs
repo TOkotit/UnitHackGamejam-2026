@@ -20,13 +20,6 @@ namespace Script.Enemy
         public void SetDirection(float direction)
         {
             if (_rb == null) _rb = GetComponent<Rigidbody2D>();
-            
-            if (direction > 0) 
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            else if (direction < 0) 
-                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            
-            // Меняем горизонтальную скорость пули
             _rb.linearVelocityX = Mathf.Sign(direction) * speed;
         }
         
