@@ -23,7 +23,7 @@ namespace Script.UI
             isStarting = true;
 
             if (screen1 != null)
-                screen1.enabled = false;
+                screen1.gameObject.SetActive(false);
 
             if (globalVolume != null)
             {
