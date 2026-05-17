@@ -14,6 +14,8 @@ namespace Script.Enemy
         [SerializeField] Transform spriteTransform;
         [SerializeField] private float visionRange = 8f;
         [SerializeField] private float chargeDistance = 4f;
+        [SerializeField] private LayerMask obstacleLayer;
+        
         
         [SerializeField] private float patrolSpeed = 2f;
         [SerializeField] private float approachSpeed = 4f;
@@ -43,14 +45,12 @@ namespace Script.Enemy
 
             if (!player) return;
 
-            var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-
-            if (distanceToPlayer <= chargeDistance)
+            if (CanSeePlayer(chargeDistance))
             {
                 StartCoroutine(ChargeRoutine());
                 return;
             }
-            currentState = distanceToPlayer <= visionRange ? ChargeState.Approach : ChargeState.Patrol;
+            currentState = CanSeePlayer(visionRange) ? ChargeState.Approach : ChargeState.Patrol;
 
             switch (currentState)
             {
@@ -64,7 +64,17 @@ namespace Script.Enemy
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        
+        private bool CanSeePlayer(float checkDistance)
+        {
+            if (!player) return false;
+            var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer > checkDistance) return false;
+            var directionToPlayer = (player.transform.position - transform.position).normalized;
+            var hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer);
+            return !hit.collider;
+        }
+        
         private void Patrol()
         {
             if (patrolPoints.Length == 0) return;

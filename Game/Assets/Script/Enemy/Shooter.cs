@@ -13,6 +13,7 @@ namespace Script.Enemy
         [SerializeField] private Transform firePoint; 
         [SerializeField] private float fireInterval = 1.75f; 
         [SerializeField] private float visionRange = 8f;
+        [SerializeField] private LayerMask obstacleLayer;
         
         [Header("Настройки патруля")]
         [SerializeField] private float patrolSpeed = 2f;
@@ -34,9 +35,7 @@ namespace Script.Enemy
         {
             if (!player) return;
 
-            var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-
-            if (distanceToPlayer <= visionRange)
+            if (CanSeePlayer(visionRange))
             {
                 currentState = ShooterState.Attack; 
                 StopAndAttack();
@@ -46,6 +45,19 @@ namespace Script.Enemy
                 currentState = ShooterState.Patrol;
                 Patrol();
             }
+        }
+        
+        private bool CanSeePlayer(float checkDistance)
+        {
+            if (!player) return false;
+
+            var distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer > checkDistance) return false;
+
+            var directionToPlayer = (player.transform.position - transform.position).normalized;
+            var hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer);
+
+            return hit.collider == null;
         }
 
         private void Patrol()

@@ -152,6 +152,9 @@ MonoBehaviour:
   firePoint: {fileID: 2451993727774133012}
   fireInterval: 1.75
   visionRange: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
   patrolSpeed: 2
   patrolPoints: []
   player: {fileID: 0}

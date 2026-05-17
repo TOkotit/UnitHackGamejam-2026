@@ -633,6 +633,9 @@ MonoBehaviour:
   spriteTransform: {fileID: 6249183123234510185}
   visionRange: 8
   chargeDistance: 4
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
   patrolSpeed: 2
   approachSpeed: 4
   chargeSpeed: 12
