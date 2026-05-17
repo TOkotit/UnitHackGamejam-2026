@@ -1,19 +1,59 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ExitDoor : MonoBehaviour
 {
     [Header("Настройки двери")] 
     [SerializeField] private float delay = 0f;  
-    private bool isExiting = false;
+    
+    [SerializeField] private Sprite openDoorSprite;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private List<GameObject> enemiesToKill;
+    
+    private bool isOpen;
 
+    
+    private void Awake()
+    {
+        if (!spriteRenderer)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    
+    private void Update()
+    {
+        if (!isOpen)
+        {
+            CheckEnemiesList();
+        }
+    }
+    private void CheckEnemiesList()
+    {
+
+        enemiesToKill.RemoveAll(enemy => !enemy);
+        
+        if (enemiesToKill.Count == 0)
+        {
+            OpenDoor();
+        }
+    }
+    
+    private void OpenDoor()
+    {
+        isOpen = true; 
+        if (spriteRenderer && openDoorSprite)
+        {
+            spriteRenderer.sprite = openDoorSprite;
+        }
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isExiting && other.CompareTag("Player"))
+        if (isOpen && other.CompareTag("Player"))
         {
-            isExiting = true;
             StartExit();
         }
     }
+    
 
     private void StartExit()
     {
