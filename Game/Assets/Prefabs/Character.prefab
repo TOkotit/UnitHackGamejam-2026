@@ -232,7 +232,6 @@ MonoBehaviour:
   checkRadius: 0.2
   audioSource: {fileID: 7573405343673156250}
   footstepClips:
-  - {fileID: 8300000, guid: c706e5dc135e7b44f859875d95b3adaf, type: 3}
   - {fileID: 8300000, guid: fd885a227c6c1ea49adca9ce14e77dce, type: 3}
   - {fileID: 8300000, guid: e21156a6f80dc0a4687da543b3421a36, type: 3}
   - {fileID: 8300000, guid: 69444dfbd8191de45add2c5fe224cceb, type: 3}

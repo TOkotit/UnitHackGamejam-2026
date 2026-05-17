@@ -7,7 +7,6 @@ namespace Script.Enemy
     {
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log($"!!! ФИЗИКА СРАБОТАЛА !!! Триггер задел: {other.gameObject.name} (Тег: {other.gameObject.tag})");
             if (other.CompareTag("Player"))
             {
                 AttackPlayer(other);

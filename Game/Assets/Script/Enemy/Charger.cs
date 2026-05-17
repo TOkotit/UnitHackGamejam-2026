@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Script.Enemy
 {
-    public class Charger : MonoBehaviour
+    public class Charger : MonoBehaviour, IEnemy
     {
         
-        public EnemyState currentState = EnemyState.Patrol;
+        public ChargeState currentState = ChargeState.Patrol;
         [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] Animator animator;
         [SerializeField] private GameObject attackZone;
@@ -50,14 +50,14 @@ namespace Script.Enemy
                 StartCoroutine(ChargeRoutine());
                 return;
             }
-            currentState = distanceToPlayer <= visionRange ? EnemyState.Approach : EnemyState.Patrol;
+            currentState = distanceToPlayer <= visionRange ? ChargeState.Approach : ChargeState.Patrol;
 
             switch (currentState)
             {
-                case EnemyState.Patrol:
+                case ChargeState.Patrol:
                     Patrol();
                     break;
-                case EnemyState.Approach:
+                case ChargeState.Approach:
                     ApproachPlayer();
                     break;
                 default:
@@ -93,7 +93,7 @@ namespace Script.Enemy
         {
             _isChargingSequence = true;
             
-            currentState = EnemyState.WindUp;
+            currentState = ChargeState.WindUp;
             animator.SetTrigger("startWait");
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocityY); 
         
@@ -104,7 +104,7 @@ namespace Script.Enemy
 
             yield return new WaitForSeconds(windUpTime);
 
-            currentState = EnemyState.Charge;
+            currentState = ChargeState.Charge;
             animator.SetTrigger("startCharge");
             attackZone.SetActive(true);
             var timer = 0f;
@@ -120,7 +120,7 @@ namespace Script.Enemy
             yield return new WaitForSeconds(0.3f); 
 
             _isChargingSequence = false;
-            currentState = EnemyState.Patrol;
+            currentState = ChargeState.Patrol;
             attackZone.SetActive(false);
             animator.SetTrigger("startWalk");
         }
@@ -139,6 +139,11 @@ namespace Script.Enemy
             Gizmos.DrawWireSphere(transform.position, visionRange);
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, chargeDistance);
+        }
+
+        public void Die()
+        {
+            Destroy(gameObject);
         }
         
     }

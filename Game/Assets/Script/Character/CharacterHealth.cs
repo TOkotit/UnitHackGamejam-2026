@@ -23,7 +23,16 @@ namespace Script.Character
 
             if (spriteRenderer == null)
             {
+                spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
+            
+            if (spriteRenderer != null)
+            {
                 originalColor = spriteRenderer.color;
+            }
+            else
+            {
+                Debug.LogError($"На объекте {gameObject.name} не найден SpriteRenderer!");
             }
         }
         

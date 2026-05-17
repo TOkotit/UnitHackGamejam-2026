@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 6249183123234510185}
   - component: {fileID: 4225845900392934551}
   - component: {fileID: 578858556193693542}
-  - component: {fileID: 1700874578600822683}
+  - component: {fileID: 8809013686531728173}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PixelsPerUnit: 8
---- !u!95 &1700874578600822683
+--- !u!95 &8809013686531728173
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   spriteRenderer: {fileID: 4225845900392934551}
-  animator: {fileID: 1700874578600822683}
+  animator: {fileID: 8809013686531728173}
   attackZone: {fileID: 4683260123990563097}
   spriteTransform: {fileID: 6249183123234510185}
   visionRange: 8

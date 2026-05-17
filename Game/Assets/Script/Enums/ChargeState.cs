@@ -1,4 +1,4 @@
-public enum EnemyState
+public enum ChargeState
 {
     Patrol,
     Approach,

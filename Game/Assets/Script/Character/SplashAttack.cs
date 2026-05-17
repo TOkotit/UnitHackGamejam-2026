@@ -1,3 +1,4 @@
+using Script.Enemy;
 using UnityEngine;
 
 namespace Script.Character
@@ -24,7 +25,8 @@ namespace Script.Character
 
         private void KillEnemy(GameObject enemy)
         {
-            Destroy(enemy);
+            var component = enemy.GetComponent<IEnemy>();
+            component.Die();
         }
     }
 }
