@@ -6,7 +6,7 @@ namespace Script.Enemy
     {
         public ShooterState currentState = ShooterState.Patrol;
         [SerializeField] private SpriteRenderer spriteRenderer;
-        // [SerializeField] private Animator animator;
+        [SerializeField] private Animator animator;
         
         [Header("Настройки стрельбы")]
         [SerializeField] private GameObject bulletPrefab;
@@ -62,10 +62,14 @@ namespace Script.Enemy
             {
                 _currentPatrolIndex = (_currentPatrolIndex + 1) % patrolPoints.Length;
             }
+            
+            animator.SetTrigger("walk");
         }
         
         private void StopAndAttack()
         {
+            animator.SetTrigger("shoot");
+
             _rb.linearVelocity = new Vector2(0, _rb.linearVelocity.y);
             
             var directionToPlayer = Mathf.Sign(player.transform.position.x - transform.position.x);
@@ -82,8 +86,8 @@ namespace Script.Enemy
         {
             // if (animator != null)
             // {
-            //     // animator.SetTrigger("attack");
-            // }
+            
+            
 
             if (bulletPrefab != null && firePoint != null)
             {

@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   spriteRenderer: {fileID: 6847363006114412076}
+  animator: {fileID: 6013645351066795839}
   bulletPrefab: {fileID: 1621786815397942445, guid: f8187ba72fe942343b5eabdf2a63863d, type: 3}
   firePoint: {fileID: 2451993727774133012}
   fireInterval: 1.75
@@ -165,6 +166,7 @@ GameObject:
   - component: {fileID: 3682272018133012434}
   - component: {fileID: 6847363006114412076}
   - component: {fileID: 7902415326085727709}
+  - component: {fileID: 6013645351066795839}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -231,7 +233,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b4df4c4055b79f342a6699b1b8c79c3e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2e237830d3f9f584d8f09e4ad989e864, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -255,6 +257,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PixelsPerUnit: 8
+--- !u!95 &6013645351066795839
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755678677650409511}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c8a8edd5ccce55d4dabbe0798d9642bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6124238672908815249
 GameObject:
   m_ObjectHideFlags: 0
