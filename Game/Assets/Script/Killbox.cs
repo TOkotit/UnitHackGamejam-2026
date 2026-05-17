@@ -7,10 +7,10 @@ namespace Script
 {
     public class Killbox : MonoBehaviour
     {
-        private void OnTriggerExit2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
-            {
+            { 
                 other.GetComponent<CharacterHealth>().Die();
             }
             else if (other.CompareTag("Enemy"))

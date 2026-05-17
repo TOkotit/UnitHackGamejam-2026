@@ -29,6 +29,8 @@ namespace Script.Character
         private float footstepTimer;
         private bool isAttacking = false;
         private bool isGrounded;
+        
+        
         public void Awake()
         {
             if(!characterRB)

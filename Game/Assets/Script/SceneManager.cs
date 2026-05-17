@@ -24,9 +24,14 @@ public static class GameSceneManager
         SceneManager.LoadScene(sceneName);
     }
     
-    public static void LoadNextScene()
+    public static void LoadNextScene(MonoBehaviour caller)
     {
-        int next = (SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings;
+        int currentIndex = caller.gameObject.scene.buildIndex;
+
+        int next = currentIndex + 1;
+
+        if (next >= SceneManager.sceneCountInBuildSettings)
+            next = 0;
         LoadScene(next);
     }
 

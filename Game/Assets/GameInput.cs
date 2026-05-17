@@ -269,6 +269,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CloseCutMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""689d9cfb-65ca-47d0-9822-6d4d7d5f6306"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -304,6 +313,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94b1a39e-6386-4edd-8d9c-d728f7220728"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseCutMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -322,6 +342,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_UI_Cut = m_UI.FindAction("Cut", throwIfNotFound: true);
         m_UI_Rotate = m_UI.FindAction("Rotate", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
+        m_UI_CloseCutMenu = m_UI.FindAction("CloseCutMenu", throwIfNotFound: true);
     }
 
     ~@GameInput()
@@ -546,6 +567,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Cut;
     private readonly InputAction m_UI_Rotate;
     private readonly InputAction m_UI_Point;
+    private readonly InputAction m_UI_CloseCutMenu;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -569,6 +591,10 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/Point".
         /// </summary>
         public InputAction @Point => m_Wrapper.m_UI_Point;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/CloseCutMenu".
+        /// </summary>
+        public InputAction @CloseCutMenu => m_Wrapper.m_UI_CloseCutMenu;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -604,6 +630,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Point.started += instance.OnPoint;
             @Point.performed += instance.OnPoint;
             @Point.canceled += instance.OnPoint;
+            @CloseCutMenu.started += instance.OnCloseCutMenu;
+            @CloseCutMenu.performed += instance.OnCloseCutMenu;
+            @CloseCutMenu.canceled += instance.OnCloseCutMenu;
         }
 
         /// <summary>
@@ -624,6 +653,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Point.started -= instance.OnPoint;
             @Point.performed -= instance.OnPoint;
             @Point.canceled -= instance.OnPoint;
+            @CloseCutMenu.started -= instance.OnCloseCutMenu;
+            @CloseCutMenu.performed -= instance.OnCloseCutMenu;
+            @CloseCutMenu.canceled -= instance.OnCloseCutMenu;
         }
 
         /// <summary>
@@ -728,5 +760,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPoint(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CloseCutMenu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCloseCutMenu(InputAction.CallbackContext context);
     }
 }

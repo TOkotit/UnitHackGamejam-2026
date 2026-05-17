@@ -256,9 +256,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+  _animator: {fileID: 1201882031829098276}
   invincibilityDuration: 1.5
   blinkInterval: 0.1
   blinkColor: {r: 1, g: 1, b: 1, a: 0.5}
+  _playerMovement: {fileID: 1636500784101023322}
   spriteRenderer: {fileID: 4461527291395980976}
 --- !u!50 &3476798635722210979
 Rigidbody2D:

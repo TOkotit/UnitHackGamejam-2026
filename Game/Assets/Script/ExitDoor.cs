@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +10,11 @@ public class ExitDoor : MonoBehaviour
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private List<GameObject> enemiesToKill;
-    
+    private bool isExiting;
     private bool isOpen;
 
     
-    private void Awake()
+    private void Start()
     {
         if (!spriteRenderer)
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -48,23 +49,11 @@ public class ExitDoor : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isOpen && other.CompareTag("Player"))
+        if (isOpen && !isExiting && other.CompareTag("Player"))
         {
-            StartExit();
+            isExiting = true;
+            GameSceneManager.LoadNextScene(this);
+            
         }
-    }
-    
-
-    private void StartExit()
-    {
-        if (delay > 0f)
-            Invoke(nameof(LoadNextScene), delay);
-        else
-            LoadNextScene();
-    }
-
-    private void LoadNextScene()
-    {
-        GameSceneManager.LoadNextScene();
     }
 }

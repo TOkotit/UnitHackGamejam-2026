@@ -32,6 +32,7 @@ namespace Script.Enemy
         private int _currentPatrolIndex = 0;
         private Vector2 _chargeDirection;
         private bool _isChargingSequence = false;
+        private bool isInvincible = false;
 
         private void Start()
         {
@@ -116,6 +117,7 @@ namespace Script.Enemy
 
             currentState = ChargeState.Charge;
             animator.SetTrigger("startCharge");
+            isInvincible = true;
             attackZone.SetActive(true);
             var timer = 0f;
 
@@ -133,6 +135,7 @@ namespace Script.Enemy
             currentState = ChargeState.Patrol;
             attackZone.SetActive(false);
             animator.SetTrigger("startWalk");
+            isInvincible = false;
         }
         
         private void Flip(float moveX)
@@ -153,6 +156,7 @@ namespace Script.Enemy
 
         public void Die()
         {
+            if (isInvincible) return;
             Destroy(gameObject);
         }
         

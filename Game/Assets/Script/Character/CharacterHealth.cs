@@ -7,15 +7,16 @@ namespace Script.Character
     {
         [SerializeField] private int maxHealth = 3;
         private int currentHealth;
-
+        [SerializeField] private Animator _animator;
         [SerializeField] private float invincibilityDuration = 1.5f; 
         [SerializeField] private float blinkInterval = 0.1f;      
         [SerializeField] private Color blinkColor = new (1f, 0f, 0f, 0.5f);
         private Color originalColor;
-        
+        [SerializeField] private CharacterController _playerMovement;
         [SerializeField] private SpriteRenderer spriteRenderer;
         
         private bool isInvincible = false;
+        private bool isDead = false;
         
         private void Awake()
         {
@@ -79,6 +80,16 @@ namespace Script.Character
 
         public void Die()
         {
+            if (isDead) return;
+            isDead = true;
+            _playerMovement.enabled = false;
+            _animator.SetTrigger("death");
+            StartCoroutine(ReloadAfterDelay());
+
+        }
+        private IEnumerator ReloadAfterDelay()
+        {
+            yield return new WaitForSeconds(3f);
             GameSceneManager.ReloadCurrentScene();
         }
     }

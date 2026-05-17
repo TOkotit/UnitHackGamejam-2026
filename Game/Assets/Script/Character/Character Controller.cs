@@ -8,7 +8,7 @@ namespace Script.Character
                 private Vector2 moveDirection;
                 [SerializeField] CharacterMovement _characterMovement;
                 [SerializeField] InputManager _inputManager;
-                
+
 
                 private void OnEnable()
                 {

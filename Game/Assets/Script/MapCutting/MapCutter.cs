@@ -67,6 +67,7 @@ public class MapCutter : MonoBehaviour
             gameInput.UI.Rotate.performed += OnRotatePerformed;
             gameInput.UI.Point.performed += OnPointPerformed;
             gameInput.UI.Point.canceled += OnPointCanceled;
+            gameInput.UI.CloseCutMenu.performed += OnCloseCutMenu;
             gameInput.Gameplay.CutMenu.performed += OnCutMenuPerformed;
         }
 
@@ -96,6 +97,8 @@ public class MapCutter : MonoBehaviour
             gameInput.UI.Rotate.performed -= OnRotatePerformed;
             gameInput.UI.Point.performed -= OnPointPerformed;
             gameInput.UI.Point.canceled -= OnPointCanceled;
+            gameInput.UI.CloseCutMenu.performed -= OnCloseCutMenu;
+
             gameInput.Gameplay.CutMenu.performed -= OnCutMenuPerformed;
         }
         Time.timeScale = 1f;
@@ -110,7 +113,6 @@ public class MapCutter : MonoBehaviour
         }
         else
         {
-            availableCuts--;
             if (Mouse.current != null)
             {
                 var screenPos = Mouse.current.position.ReadValue();
@@ -121,6 +123,11 @@ public class MapCutter : MonoBehaviour
         }
     }
 
+    private void OnCloseCutMenu(InputAction.CallbackContext context)
+    {
+        inputManager.SetGameplay();
+        ExitCutMode();
+    }
     private void EnterCutMode()
     {
         Time.timeScale = 0f;
@@ -220,6 +227,7 @@ public class MapCutter : MonoBehaviour
 
         if (!TryGetCutLineData(mouseWorldPos, isHorizontal, out var cutCoordWorld, out var cutCell))
             return;
+        availableCuts--;
 
         SwapTilemapParts(cutCell, isHorizontal);
 

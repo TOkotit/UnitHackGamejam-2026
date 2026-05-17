@@ -34,6 +34,7 @@ namespace Script.UI
             StartCoroutine(ZoomRoutine());
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private IEnumerator ZoomRoutine()
         {
             isRunning = true;
@@ -61,15 +62,7 @@ namespace Script.UI
             mainCamera.transform.position = targetPosition;
             mainCamera.orthographicSize = targetSize;
 
-            var nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-            {
-                SceneManager.LoadScene(nextSceneIndex);
-            }
-            else
-            {
-                Debug.LogError("Следующей сцены нет в Build Settings!");
-            }
+            GameSceneManager.LoadNextScene(this);
         }
     }
 }
